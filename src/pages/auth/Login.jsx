@@ -3,17 +3,22 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LogIn } from 'lucide-react';
+import { LogIn, MoonStar, SunMedium } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Input from '../../ui/Input';
 import Button from '../../ui/Button';
 import { mockUsers } from '../../data/mockData';
 import { useAuthStore } from '../../store/authStore';
 import { rolesConfig } from '../../utils/roles';
+import { useThemeStore } from '../../store/themeStore';
 
 const schema = z.object({
-  username: z.string().min(3, 'نام کاربری الزامی است'),
-  password: z.string().min(4, 'رمز عبور حداقل ۴ کاراکتر')
+  username: z
+    .string({ required_error: 'نام کاربری الزامی است', invalid_type_error: 'نام کاربری معتبر نیست' })
+    .min(3, 'نام کاربری باید حداقل ۳ کاراکتر باشد'),
+  password: z
+    .string({ required_error: 'رمز عبور الزامی است', invalid_type_error: 'رمز عبور معتبر نیست' })
+    .min(4, 'رمز عبور باید حداقل ۴ کاراکتر باشد')
 });
 
 export default function Login() {
@@ -30,6 +35,7 @@ export default function Login() {
   } = useForm({ resolver: zodResolver(schema) });
 
   const locked = useMemo(() => lockUntil && lockUntil > Date.now(), [lockUntil]);
+  const { theme, toggleTheme } = useThemeStore();
 
   useEffect(() => {
     if (token && role) {
@@ -63,6 +69,23 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-dark px-4">
+      <div className="absolute top-4 left-4">
+        <button
+          onClick={toggleTheme}
+          className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
+          aria-label="تغییر حالت نمایش"
+        >
+          {theme === 'dark' ? (
+            <>
+              <SunMedium className="w-4 h-4" /> حالت روشن
+            </>
+          ) : (
+            <>
+              <MoonStar className="w-4 h-4" /> حالت تاریک
+            </>
+          )}
+        </button>
+      </div>
       <div className="w-full max-w-md card p-8">
         <div className="text-center mb-6">
           <p className="text-2xl font-extrabold text-primary">ورود به پنل ادمین</p>
