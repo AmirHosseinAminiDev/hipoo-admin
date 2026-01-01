@@ -15,6 +15,7 @@ import Notifications from '../pages/settings/Notifications';
 export default function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/admin/login" replace />} />
       <Route path="/admin/login" element={<Login />} />
       <Route element={<ProtectedRoute allowedRoles={[ 'admin', 'receptionist', 'finance', 'trainer' ]} />}>
         <Route path="/admin" element={<AdminLayout />}>
@@ -84,7 +85,7 @@ export default function AppRoutes() {
           />
         </Route>
       </Route>
-      <Route path="*" element={<Navigate to="/admin" replace />} />
+      <Route path="*" element={<Navigate to="/admin/login" replace />} />
     </Routes>
   );
 }
