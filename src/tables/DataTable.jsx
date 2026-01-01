@@ -27,7 +27,7 @@ export default function DataTable({ columns, data, rowKey = 'id' }) {
   if (!data.length) return <EmptyState />;
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+    <div className="w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <table className="min-w-full text-sm">
         <thead className="bg-slate-50 dark:bg-slate-800/40 text-slate-700 dark:text-slate-200">
           <tr>
@@ -45,7 +45,10 @@ export default function DataTable({ columns, data, rowKey = 'id' }) {
           {sortedData.map((row) => (
             <tr key={row[rowKey]} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
               {columns.map((col) => (
-                <td key={col.accessor} className="px-4 py-3 whitespace-nowrap align-middle">
+                <td
+                  key={col.accessor}
+                  className="px-4 py-3 align-middle whitespace-nowrap sm:whitespace-normal text-right"
+                >
                   {col.cell ? col.cell(row) : row[col.accessor]}
                 </td>
               ))}

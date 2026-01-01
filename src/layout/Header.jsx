@@ -21,11 +21,11 @@ export default function Header() {
         >
           {theme === 'dark' ? <SunMedium className="w-5 h-5" /> : <MoonStar className="w-5 h-5" />}
         </button>
-        <div className="hidden sm:flex flex-col text-sm text-right">
+        <div className="hidden sm:flex flex-col text-sm text-right px-2 py-1 rounded-lg border border-transparent sm:border-slate-200 sm:dark:border-slate-700">
           <span className="font-semibold">{user?.name || 'کاربر'}</span>
           <span className="text-slate-500">{user?.role}</span>
         </div>
-        <Button variant="outline" onClick={logout} className="!px-3">
+        <Button variant="outline" onClick={logout} className="!px-3 !py-2 flex items-center gap-2">
           <LogOut className="w-4 h-4" />
           خروج
         </Button>
