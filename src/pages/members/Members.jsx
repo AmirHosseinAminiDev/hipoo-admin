@@ -66,7 +66,7 @@ export default function Members() {
       header: 'عملیات',
       accessor: 'actions',
       cell: (row) => (
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
           <Link to={`/admin/members/${row.id}`} className="text-primary flex items-center gap-1">
             <Eye className="w-4 h-4" /> مشاهده
           </Link>
@@ -132,41 +132,46 @@ export default function Members() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-3 items-center">
-          <SearchBar value={search} onChange={setSearch} placeholder="جستجو نام، کدملی یا شماره" />
-          <Select value={filters.plan} onChange={(e) => setFilters((f) => ({ ...f, plan: e.target.value }))}>
-            <option value="all">همه پلن‌ها</option>
-            {plans.map((p) => (
-              <option key={p.id} value={p.name}>
-                {p.name}
-              </option>
-            ))}
-          </Select>
-          <Select value={filters.status} onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}>
-            <option value="all">همه وضعیت‌ها</option>
-            <option value="فعال">فعال</option>
-            <option value="منقضی">منقضی</option>
-          </Select>
-          <Select value={filters.payment} onChange={(e) => setFilters((f) => ({ ...f, payment: e.target.value }))}>
-            <option value="all">همه پرداخت‌ها</option>
-            <option value="موفق">موفق</option>
-            <option value="ناموفق">ناموفق</option>
-            <option value="بدهکار">بدهکار</option>
-          </Select>
-          <Input
-            type="text"
-            placeholder="تاریخ پایان (مثلاً 1403/08/01)"
-            value={filters.endDate}
-            onChange={(e) => setFilters((f) => ({ ...f, endDate: e.target.value }))}
-          />
+      <div className="card p-4 space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-3 items-center w-full sm:w-auto">
+            <SearchBar value={search} onChange={setSearch} placeholder="جستجو نام، کدملی یا شماره" />
+            <Select value={filters.plan} onChange={(e) => setFilters((f) => ({ ...f, plan: e.target.value }))}>
+              <option value="all">همه پلن‌ها</option>
+              {plans.map((p) => (
+                <option key={p.id} value={p.name}>
+                  {p.name}
+                </option>
+              ))}
+            </Select>
+            <Select value={filters.status} onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}>
+              <option value="all">همه وضعیت‌ها</option>
+              <option value="فعال">فعال</option>
+              <option value="منقضی">منقضی</option>
+            </Select>
+            <Select value={filters.payment} onChange={(e) => setFilters((f) => ({ ...f, payment: e.target.value }))}>
+              <option value="all">همه پرداخت‌ها</option>
+              <option value="موفق">موفق</option>
+              <option value="ناموفق">ناموفق</option>
+              <option value="بدهکار">بدهکار</option>
+            </Select>
+            <Input
+              type="text"
+              placeholder="تاریخ پایان (مثلاً 1403/08/01)"
+              value={filters.endDate}
+              onChange={(e) => setFilters((f) => ({ ...f, endDate: e.target.value }))}
+              className="w-full sm:w-auto"
+            />
+          </div>
+          <Button onClick={() => openModal('create')} className="self-end">
+            <PlusCircle className="w-4 h-4" /> عضو جدید
+          </Button>
         </div>
-        <Button onClick={() => openModal('create')} className="self-end">
-          <PlusCircle className="w-4 h-4" /> عضو جدید
-        </Button>
+        <div className="overflow-x-auto">
+          <DataTable columns={columns} data={paged} />
+        </div>
       </div>
 
-      <DataTable columns={columns} data={paged} />
       <Pagination page={page} total={filtered.length} pageSize={pageSize} onChange={setPage} />
 
       <MemberModal modal={modal} onClose={() => setModal({ open: false, type: 'edit', member: null })} onSave={handleSave} onRenew={handleRenew} />
